@@ -109,7 +109,7 @@
             <p class="text-md sm:text-lg text-gray-500 mt-1">Navigate Your Interview with Confidence</p>
         </header>
 
-        <main id="psychometricForm" class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl space-y-10">
+        <form id="psychometricForm" class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl space-y-10">
             
             <!-- Student Details Section -->
             <div id="studentDetailsSection">
@@ -173,7 +173,7 @@
                     ✨ Submit & Get Your Report
                 </button>
             </div>
-        </main>
+        </form>
     </div>
 
     <!-- Modal for displaying results -->
@@ -257,7 +257,7 @@
             const inputs = studentDetailsSection.querySelectorAll('input[required]');
             for (const input of inputs) {
                 if (!input.value.trim()) {
-                    showCustomAlert(Please fill out the '${input.labels[0].innerText}' field.);
+                    showCustomAlert(`Please fill out the '${input.labels[0].innerText}' field.`);
                     input.focus();
                     return;
                 }
@@ -276,7 +276,7 @@
                 const questionCard = document.createElement('div');
                 questionCard.className = 'p-6 bg-white rounded-xl border border-gray-200 question-card';
 
-                let questionHTML = <p class="text-md font-semibold text-gray-800 mb-5">${item.q}</p><div class="flex flex-wrap gap-3">;
+                let questionHTML = `<p class="text-md font-semibold text-gray-800 mb-5">${item.q}</p><div class="flex flex-wrap gap-3">`;
 
                 if (item.type === 'scale') {
                     const options = [
@@ -294,7 +294,7 @@
                             </label>`;
                     });
                 } else if (item.type === 'mcq') {
-                    questionHTML = <p class="text-md font-semibold text-gray-800 mb-5">${item.q}</p><div class="space-y-3">; // Override for vertical layout
+                    questionHTML = `<p class="text-md font-semibold text-gray-800 mb-5">${item.q}</p><div class="space-y-3">`; // Override for vertical layout
                     item.options.forEach(opt => {
                         questionHTML += `
                             <label class="custom-radio-label cursor-pointer flex">
@@ -304,7 +304,7 @@
                     });
                 }
 
-                questionHTML += </div>;
+                questionHTML += `</div>`;
                 questionCard.innerHTML = questionHTML;
                 questionsContainer.appendChild(questionCard);
             });
@@ -316,8 +316,8 @@
             const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
             const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
             
-            progressBarFill.style.width = ${percentage}%;
-            progressText.textContent = ${percentage}%;
+            progressBarFill.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}%`;
         }
 
         // Handle form submission
@@ -337,7 +337,7 @@
             }
 
             for (let i = 0; i < questions.length; i++) {
-                const selectedOption = document.querySelector(input[name="q${i+1}"]:checked);
+                const selectedOption = document.querySelector(`input[name="q${i+1}"]:checked`);
                 if (selectedOption) {
                     const category = questions[i].category;
                     scores[category].total += parseInt(selectedOption.value);
@@ -495,10 +495,10 @@
             doc.setFontSize(11);
             doc.setFont(undefined, "normal");
             doc.setTextColor(80, 80, 80);
-            doc.text(Name: ${studentDetails.name}, margin, yPosition);
-            doc.text(Roll Number: ${studentDetails.rollNumber}, margin, yPosition + 7);
-            doc.text(Email: ${studentDetails.email}, pageWidth / 2, yPosition);
-            doc.text(Department: ${studentDetails.department}, pageWidth / 2, yPosition + 7);
+            doc.text(`Name: ${studentDetails.name}`, margin, yPosition);
+            doc.text(`Roll Number: ${studentDetails.rollNumber}`, margin, yPosition + 7);
+            doc.text(`Email: ${studentDetails.email}`, pageWidth / 2, yPosition);
+            doc.text(`Department: ${studentDetails.department}`, pageWidth / 2, yPosition + 7);
             yPosition += 22;
 
             // --- TEST RESULT ---
@@ -515,7 +515,7 @@
             doc.setFontSize(28);
             doc.setFont(undefined, "bold");
             doc.setTextColor(79, 70, 229);
-            doc.text(${Math.round(percentage)}, margin, yPosition);
+            doc.text(`${Math.round(percentage)}`, margin, yPosition);
             doc.setFontSize(14);
             doc.setTextColor(120, 120, 120);
             doc.text("/ 100", margin + 14, yPosition);
@@ -545,8 +545,8 @@
                 doc.text(category, margin, yPosition);
                 doc.setFontSize(10);
                 doc.setFont(undefined, "normal");
-                doc.text(Score: ${categoryScores[category].score}/${categoryScores[category].maxScore}, margin + 60, yPosition);
-                const remarksLines = doc.splitTextToSize(Remarks: ${categoryScores[category].remarks}, contentWidth);
+                doc.text(`Score: ${categoryScores[category].score}/${categoryScores[category].maxScore}`, margin + 60, yPosition);
+                const remarksLines = doc.splitTextToSize(`Remarks: ${categoryScores[category].remarks}`, contentWidth);
                 doc.text(remarksLines, margin, yPosition + 5, { align: 'left' });
                 yPosition += (remarksLines.length * 4.5) + 8;
             }
@@ -593,7 +593,7 @@
             doc.setTextColor(255, 255, 255);
             doc.text("This is an auto-generated report based on your test responses.", pageWidth / 2, pageHeight - 6, { align: "center" });
 
-            doc.save(Psychometric_Report_${studentDetails.name.replace(/ /g, "_")}.pdf);
+            doc.save(`Psychometric_Report_${studentDetails.name.replace(/ /g, "_")}.pdf`);
         }
         
         // --- MODAL & ALERT FUNCTIONS ---
@@ -613,7 +613,7 @@
         }
 
         function showResultModal(studentDetails, score, maxScore) {
-            const mailtoLink = `mailto:${studentDetails.email}?subject=${encodeURIComponent(Psychometric Test Report for ${studentDetails.name})}&body=${encodeURIComponent(Hi ${studentDetails.name},\n\nPlease find your personalized psychometric test report attached.\n\nBest regards.)}`;
+            const mailtoLink = `mailto:${studentDetails.email}?subject=${encodeURIComponent(`Psychometric Test Report for ${studentDetails.name}`)}&body=${encodeURIComponent(`Hi ${studentDetails.name},\n\nPlease find your personalized psychometric test report attached.\n\nBest regards.`)}`;
 
             modalContent.innerHTML = `
                 <div class="mx-auto w-16 h-16 mb-4 bg-green-100 rounded-full flex items-center justify-center">
@@ -670,3 +670,4 @@
     </script>
 </body>
 </html>
+
