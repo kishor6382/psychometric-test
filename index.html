@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychometric Test: Navigating the Interview</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Custom radio button styling */
+        .custom-radio-label input[type="radio"] {
+            display: none;
+        }
+        .custom-radio-label span {
+            transition: all 0.2s ease-in-out;
+        }
+        .custom-radio-label input[type="radio"]:checked + span {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+        }
+        .custom-radio-label:hover span {
+             background-color: #e0e7ff;
+        }
+
+        /* Card hover effect */
+        .question-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        
+        /* Loading spinner animation */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1.2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Progress bar transition */
+        #progressBarFill {
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Modal transitions */
+        .modal-enter {
+            opacity: 0;
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transition: opacity 300ms;
+        }
+        .modal-leave {
+            opacity: 1;
+        }
+        .modal-leave-active {
+            opacity: 0;
+            transition: opacity 300ms;
+        }
+        #modalContent {
+            transition: transform 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-5xl">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-8">
+            <div class="inline-block bg-white p-4 rounded-2xl shadow-md">
+                <svg class="w-12 h-12 mx-auto text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-4">Psychometric Test</h1>
+            <p class="text-md sm:text-lg text-gray-500 mt-1">Navigate Your Interview with Confidence</p>
+        </header>
+
+        <main id="psychometricForm" class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl space-y-10">
+            
+            <!-- Student Details Section -->
+            <div id="studentDetailsSection">
+                <div class="flex items-center gap-4 border-b border-gray-200 pb-4 mb-6">
+                    <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg">1</div>
+                    <h2 class="text-2xl font-semibold text-gray-800">Your Details</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="studentName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" id="studentName" name="studentName" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="e.g., Kishor S" required>
+                    </div>
+                     <div>
+                        <label for="rollNumber" class="block text-sm font-medium text-gray-700 mb-1">Roll Number</label>
+                        <input type="text" id="rollNumber" name="rollNumber" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="e.g., 22EC046" required>
+                    </div>
+                     <div>
+                        <label for="department" class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                        <input type="text" id="department" name="department" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="e.g., ECE" required>
+                    </div>
+                     <div>
+                        <label for="classSection" class="block text-sm font-medium text-gray-700 mb-1">Class / Section</label>
+                        <input type="text" id="classSection" name="classSection" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="e.g., A" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="studentEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="studentEmail" name="studentEmail" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="e.g., kishorselvaraj6382@gmail.com" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions Section -->
+            <div id="questionsSection" class="hidden">
+                 <div class="flex items-center gap-4 border-b border-gray-200 pb-4 mb-6">
+                    <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg">2</div>
+                    <h2 class="text-2xl font-semibold text-gray-800">Assessment Questions</h2>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-gray-600">Progress</span>
+                        <span id="progressText" class="text-sm font-bold text-indigo-600">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="progressBarFill" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div id="questionsContainer" class="space-y-8">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Navigation / Submission Buttons -->
+            <div class="text-center pt-6 border-t border-gray-200">
+                <button type="button" id="startTestButton" class="bg-indigo-600 text-white font-semibold py-3 px-10 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-all duration-300 transform hover:scale-105">
+                    Start Test
+                </button>
+                <button type="button" id="submitButton" class="hidden bg-green-600 text-white font-semibold py-3 px-10 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 transform hover:scale-105">
+                    ✨ Submit & Get Your Report
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for displaying results -->
+    <div id="resultModal" class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center hidden z-50 p-4 modal-enter">
+        <div id="modalContent" class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center transform scale-95">
+            <!-- Content will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        // --- DATA & CONFIG ---
+        const questions = [
+             { "q": "1. I enjoy meeting new people and easily initiate conversations.", "type": "scale", "category": "Personality" },
+             { "q": "2. I pay attention to details and prefer planning before acting.", "type": "scale", "category": "Personality" },
+             { "q": "3. I remain calm even in stressful situations.", "type": "scale", "category": "Emotional Intelligence" },
+             { "q": "4. I am curious and open to trying new ideas and methods.", "type": "scale", "category": "Personality" },
+             { "q": "5. I work well independently without constant supervision.", "type": "scale", "category": "Personality" },
+             { "q": "6. I am usually enthusiastic and energetic.", "type": "scale", "category": "Personality" },
+             { "q": "7. I follow through with tasks I start.", "type": "scale", "category": "Personality" },
+             { "q": "8. I get upset or nervous easily.", "type": "scale", "reverse": true, "category": "Emotional Intelligence" },
+             { "q": "9. I value creative approaches to problem-solving.", "type": "scale", "category": "Personality" },
+             { "q": "10. I adapt well to new environments and changes.", "type": "scale", "category": "Personality" },
+             { "q": "11. I understand how my emotions influence my decisions.", "type": "scale", "category": "Emotional Intelligence" },
+             { "q": "12. I can control my emotions even when I feel stressed.", "type": "scale", "category": "Emotional Intelligence" },
+             { "q": "13. I empathize easily with other people's feelings.", "type": "scale", "category": "Emotional Intelligence" },
+             { "q": "14. I maintain calm during difficult conversations.", "type": "scale", "category": "Communication" },
+             { "q": "15. I can read non-verbal cues like tone and body language.", "type": "scale", "category": "Communication" },
+             { "q": "16. I try to resolve conflicts instead of avoiding them.", "type": "scale", "category": "Situational Judgment" },
+             { "q": "17. I accept constructive criticism without taking it personally.", "type": "scale", "category": "Personality" },
+             { "q": "18. I encourage others when they feel low or demotivated.", "type": "scale", "category": "Emotional Intelligence" },
+             { "q": "19. I am aware of my strengths and weaknesses.", "type": "scale", "category": "Emotional Intelligence" },
+             { "q": "20. I listen actively during conversations.", "type": "scale", "category": "Communication" },
+             { "q": "21. I can express my ideas clearly in both written and spoken formats.", "type": "scale", "category": "Communication" },
+             { "q": "22. I listen carefully and do not interrupt while others are talking.", "type": "scale", "category": "Communication" },
+             { "q": "23. I adjust my communication style based on the audience.", "type": "scale", "category": "Communication" },
+             { "q": "24. I feel confident while speaking in group discussions or interviews.", "type": "scale", "category": "Communication" },
+             { "q": "25. I maintain eye contact and appropriate body language when speaking.", "type": "scale", "category": "Communication" },
+             { "q": "26. I can handle questions or objections calmly.", "type": "scale", "category": "Emotional Intelligence" },
+             { "q": "27. I am able to structure my answers logically during interviews.", "type": "scale", "category": "Communication" },
+             { "q": "28. I ask relevant questions when I don't understand something.", "type": "scale", "category": "Communication" },
+             { "q": "29. I respond to feedback professionally and politely.", "type": "scale", "category": "Communication" },
+             { "q": "30. I can summarize my views effectively without rambling.", "type": "scale", "category": "Communication" },
+             { "q": "31. I enjoy working with machines, tools, or animals.", "type": "scale", "category": "Career Interests" },
+             { "q": "32. I like solving puzzles or analysing scientific data.", "type": "scale", "category": "Career Interests" },
+             { "q": "33. I enjoy music, writing, art, or drama.", "type": "scale", "category": "Career Interests" },
+             { "q": "34. I like helping people solve their problems.", "type": "scale", "category": "Career Interests" },
+             { "q": "35. I enjoy leading teams or selling ideas.", "type": "scale", "category": "Career Interests" },
+             { "q": "36. I prefer working with numbers, data, and organized tasks.", "type": "scale", "category": "Career Interests" },
+             { "q": "37. I feel most satisfied when I work on hands-on tasks.", "type": "scale", "category": "Career Interests" },
+             { "q": "38. I would enjoy doing research or investigative writing.", "type": "scale", "category": "Career Interests" },
+             { "q": "39. I feel motivated when I can teach or counsel others.", "type": "scale", "category": "Career Interests" },
+             { "q": "40. I prefer roles where I can organize files, reports, or systems.", "type": "scale", "category": "Career Interests" },
+             { "q": "41. You are asked a question in an interview but don't know the answer. What do you do?", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Make up an answer that sounds good.", "score": 1 }, { "text": "B. Admit you don't know and stay silent.", "score": 2 }, { "text": "C. Politely acknowledge it and mention how you would find the answer.", "score": 5 }, { "text": "D. Try to divert the question.", "score": 1 }] },
+             { "q": "42. During a group interview, a teammate is dominating. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Argue and challenge him.", "score": 1 }, { "text": "B. Let them continue to avoid conflict.", "score": 2 }, { "text": "C. Wait and then calmly ask to share your view.", "score": 5 }, { "text": "D. Ignore the discussion.", "score": 1 }] },
+             { "q": "43. The interviewer gives feedback that your response lacked clarity. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Get defensive and justify yourself.", "score": 1 }, { "text": "B. Say \"okay\" but don't respond.", "score": 2 }, { "text": "C. Ask politely for clarification and offer a better answer.", "score": 5 }, { "text": "D. Change the topic.", "score": 1 }] },
+             { "q": "44. You forgot an important document before your interview. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Panic and cancel the interview.", "score": 1 }, { "text": "B. Attend and apologize, explaining honestly.", "score": 5 }, { "text": "C. Blame someone else.", "score": 1 }, { "text": "D. Skip the question if asked.", "score": 1 }] },
+             { "q": "45. You're asked about a weakness. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Say \"I have none.\"", "score": 1 }, { "text": "B. Mention a weakness and how you're improving.", "score": 5 }, { "text": "C. Give a fake strength as a weakness.", "score": 2 }, { "text": "D. Avoid answering.", "score": 1 }] },
+             { "q": "46. You are working on a group project. One team member is not contributing...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Do their part of the work silently to avoid conflict", "score": 2 }, { "text": "B. Confront them publicly in front of the team", "score": 1 }, { "text": "C. Speak to them privately and try to understand their side", "score": 5 }, { "text": "D. Complain to the teacher without discussing with the team member", "score": 3 }] },
+             { "q": "47. You notice your friend cheating during an important online test...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Ignore it - they're your friend and need help", "score": 1 }, { "text": "B. Tell the teacher immediately", "score": 3 }, { "text": "C. Confront your friend privately and advise them not to do it again", "score": 5 }, { "text": "D. Warn them during the test to stop", "score": 2 }] },
+             { "q": "48. During a mock interview, you're asked a technical question you don't know the answer to...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Try to bluff and answer vaguely", "score": 1 }, { "text": "B. Admit you don't know and remain silent", "score": 2 }, { "text": "C. Say, \"I'm not sure, but I'd approach it by...\" and describe your thinking process", "score": 5 }, { "text": "D. Skip the question entirely and hope it's not noticed", "score": 1 }] },
+             { "q": "49. You send a message to a classmate that they misinterpret...", "type": "mcq", "category": "Communication", "options": [{ "text": "A. Ignore it they'll get over it", "score": 1 }, { "text": "B. Clarify what you meant and apologize if it caused confusion", "score": 5 }, { "text": "C. Ask others to explain it to them", "score": 2 }, { "text": "D. Block them to avoid confrontation", "score": 1 }] },
+             { "q": "50. You are selected as the team leader for an event. Just a day before the event, your two key volunteers drop out...", "type": "mcq", "category": "Personality", "options": [{ "text": "A. Panic and cancel the event", "score": 1 }, { "text": "B. Blame them publicly and ask others to replace them", "score": 2 }, { "text": "C. Calmly reassess roles, delegate efficiently, and motivate your team", "score": 5 }, { "text": "D. Try to do everything yourself", "score": 3 }] }
+        ];
+
+        // --- DOM ELEMENTS ---
+        const form = document.getElementById('psychometricForm');
+        const studentDetailsSection = document.getElementById('studentDetailsSection');
+        const questionsSection = document.getElementById('questionsSection');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const startTestButton = document.getElementById('startTestButton');
+        const submitButton = document.getElementById('submitButton');
+        const modal = document.getElementById('resultModal');
+        const modalContent = document.getElementById('modalContent');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const progressText = document.getElementById('progressText');
+
+        // --- FUNCTIONS ---
+
+        // Function to start the test
+        function startTest() {
+            const inputs = studentDetailsSection.querySelectorAll('input[required]');
+            for (const input of inputs) {
+                if (!input.value.trim()) {
+                    showCustomAlert(Please fill out the '${input.labels[0].innerText}' field.);
+                    input.focus();
+                    return;
+                }
+            }
+            studentDetailsSection.classList.add('hidden');
+            questionsSection.classList.remove('hidden');
+            startTestButton.classList.add('hidden');
+            submitButton.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Function to create and append questions to the form
+        function renderQuestions() {
+            questions.forEach((item, index) => {
+                const questionIndex = index + 1;
+                const questionCard = document.createElement('div');
+                questionCard.className = 'p-6 bg-white rounded-xl border border-gray-200 question-card';
+
+                let questionHTML = <p class="text-md font-semibold text-gray-800 mb-5">${item.q}</p><div class="flex flex-wrap gap-3">;
+
+                if (item.type === 'scale') {
+                    const options = [
+                        { label: 'Strongly Agree', value: item.reverse ? 1 : 5 },
+                        { label: 'Agree', value: item.reverse ? 2 : 4 },
+                        { label: 'Neutral', value: 3 },
+                        { label: 'Disagree', value: item.reverse ? 4 : 2 },
+                        { label: 'Strongly Disagree', value: item.reverse ? 5 : 1 }
+                    ];
+                    options.forEach(opt => {
+                        questionHTML += `
+                            <label class="custom-radio-label cursor-pointer">
+                                <input type="radio" name="q${questionIndex}" value="${opt.value}" data-label="${opt.label}" required>
+                                <span class="block text-center px-4 py-2 rounded-lg border border-gray-300 font-medium">${opt.label}</span>
+                            </label>`;
+                    });
+                } else if (item.type === 'mcq') {
+                    questionHTML = <p class="text-md font-semibold text-gray-800 mb-5">${item.q}</p><div class="space-y-3">; // Override for vertical layout
+                    item.options.forEach(opt => {
+                        questionHTML += `
+                            <label class="custom-radio-label cursor-pointer flex">
+                                <input type="radio" name="q${questionIndex}" value="${opt.score}" data-label="${opt.text}" required>
+                                <span class="block w-full text-left px-4 py-3 rounded-lg border border-gray-300 font-medium">${opt.text}</span>
+                            </label>`;
+                    });
+                }
+
+                questionHTML += </div>;
+                questionCard.innerHTML = questionHTML;
+                questionsContainer.appendChild(questionCard);
+            });
+        }
+
+        // Function to update the progress bar
+        function updateProgress() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+            const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
+            
+            progressBarFill.style.width = ${percentage}%;
+            progressText.textContent = ${percentage}%;
+        }
+
+        // Handle form submission
+        function handleSubmission() {
+            let scores = {
+                "Personality": { total: 0, count: 0 },
+                "Emotional Intelligence": { total: 0, count: 0 },
+                "Communication": { total: 0, count: 0 },
+                "Career Interests": { total: 0, count: 0 },
+                "Situational Judgment": { total: 0, count: 0 }
+            };
+            
+            const answeredCount = document.querySelectorAll('input[type="radio"]:checked').length;
+            if (answeredCount < questions.length) {
+                showCustomAlert('Please answer all questions before submitting.');
+                return;
+            }
+
+            for (let i = 0; i < questions.length; i++) {
+                const selectedOption = document.querySelector(input[name="q${i+1}"]:checked);
+                if (selectedOption) {
+                    const category = questions[i].category;
+                    scores[category].total += parseInt(selectedOption.value);
+                    scores[category].count++;
+                }
+            }
+
+            const studentDetails = {
+                name: document.getElementById('studentName').value,
+                rollNumber: document.getElementById('rollNumber').value,
+                department: document.getElementById('department').value,
+                classSection: document.getElementById('classSection').value,
+                email: document.getElementById('studentEmail').value,
+            };
+
+            const totalScore = Object.values(scores).reduce((acc, curr) => acc + curr.total, 0);
+            const maxScore = questions.length * 5;
+            const percentage = (totalScore / maxScore) * 100;
+
+            showLoadingModal();
+            
+            const reportContent = getReportContent(percentage);
+            const categoryScores = calculateCategoryScores(scores);
+
+            setTimeout(() => {
+                generatePDF(studentDetails, percentage, reportContent, categoryScores);
+                showResultModal(studentDetails, totalScore, maxScore);
+            }, 1000);
+        }
+
+        function calculateCategoryScores(scores) {
+            let categoryResults = {};
+            for (const category in scores) {
+                const maxCategoryScore = scores[category].count * 5;
+                const categoryPercentage = (scores[category].total / maxCategoryScore) * 100;
+                categoryResults[category] = {
+                    score: scores[category].total,
+                    maxScore: maxCategoryScore,
+                    percentage: categoryPercentage,
+                    remarks: getCategoryRemarks(category, scores[category].total)
+                };
+            }
+            return categoryResults;
+        }
+
+        function getCategoryRemarks(category, score) {
+            const remarksMap = {
+                "Personality": {
+                    19: "Needs significant improvement in personality traits for workplace readiness.",
+                    29: "Basic personality traits identified; more self-awareness and consistency needed.",
+                    39: "Good personality strengths; a few areas can be polished for better impact.",
+                    50: "Excellent personality traits; shows strong self-awareness and adaptability."
+                },
+                "Emotional Intelligence": {
+                    19: "Needs to improve emotional awareness, regulation, and interpersonal management.",
+                    29: "Basic EQ; work on handling stress, managing reactions, and reading social cues.",
+                    39: "Good emotional intelligence; continue refining empathy and calmness under stress.",
+                    50: "Excellent emotional control and interpersonal sensitivity. Strong workplace asset."
+                },
+                "Communication": {
+                    19: "Needs significant improvement in verbal, non-verbal, and listening skills.",
+                    29: "Basic communication ability; improve clarity, vocabulary, and confidence.",
+                    39: "Good communicator; improve assertiveness, tone modulation, and articulation.",
+                    50: "Excellent communication skills; well-prepared for interviews and professional roles."
+                },
+                "Career Interests": {
+                    19: "Unclear or inconsistent career preferences; needs more career exploration.",
+                    29: "Some idea of direction; more clarity and matching with strengths needed.",
+                    39: "Career interests are shaping well; align with skills and market needs.",
+                    50: "Clear and consistent career interests; well-aligned with personality and future goals."
+                },
+                "Situational Judgment": {
+                    19: "Struggles with decision-making under interview pressure; needs practice.",
+                    29: "Basic judgment shown; needs situational awareness and professionalism.",
+                    39: "Good reasoning in most scenarios; sharpen ethical and practical decisions.",
+                    40: "Excellent judgment and professionalism; handles interview dilemmas well."
+                }
+            };
+
+            const thresholds = Object.keys(remarksMap[category]).map(Number);
+            for (const threshold of thresholds) {
+                if (score <= threshold) {
+                    return remarksMap[category][threshold];
+                }
+            }
+            return "";
+        }
+
+        // Function to get report content based on score percentage
+        function getReportContent(percentage) {
+            if (percentage >= 85) {
+                return {
+                    level: "Exceptional",
+                    feedback: "You are highly prepared for both academic and professional settings. Your scores reflect strong emotional intelligence, well-developed communication skills, sound personality traits, clear career alignment, and excellent situational judgment. You are self-aware, socially skilled, and ready to take on leadership responsibilities.",
+                    recommendations: "• Take on mentoring roles or internships with leadership tasks.\n• Join advanced training in emotional intelligence or strategic thinking.\n• Participate in high-stakes projects or competitions to further challenge yourself.\n• Continue reflective practices to maintain your growth trajectory."
+                };
+            } else if (percentage >= 70) {
+                return {
+                    level: "Proficient",
+                    feedback: "You possess a solid foundation of personal and professional capabilities. Most skill areas are well-developed, though a few may need fine-tuning. You demonstrate maturity in communication, emotional regulation, and career clarity, but there is room to polish decision-making or stress response.",
+                    recommendations: "• Engage in real-world exposure through part-time work, volunteering, or projects.\n• Enroll in advanced communication and leadership workshops.\n• Regularly practice decision-making through simulations or mock interviews.\n• Reflect on career goals by speaking with industry professionals."
+                };
+            } else if (percentage >= 55) {
+                return {
+                    level: "Developing",
+                    feedback: "You show emerging potential and moderate self-awareness. Some traits like emotional control or communication may need strengthening. While you have the right attitude, you must build consistent skills across domains for higher success in future interviews or teamwork situations.",
+                    recommendations: "• Join personality development and soft skills training programs.\n• Work with a mentor or career counselor to align your interests and strengths.\n• Participate in role-play, group discussions, and conflict resolution activities.\n• Focus on building habits like journaling, self-reflection, and active listening."
+                };
+            } else if (percentage >= 40) {
+                return {
+                    level: "Basic Awareness",
+                    feedback: "You have foundational awareness of soft skills and career alignment, but practical application is inconsistent. You may struggle with emotional regulation, unclear career focus, or expressing yourself assertively. There's good potential, but holistic development is essential.",
+                    recommendations: "• Start with foundational workshops on communication, El, and self-awareness.\n• Use structured self-help tools (journaling, career quizzes, videos).\n• Set simple weekly improvement goals (e.g., 1 new word daily, 1 mock GD).\n• Shadow peers or professionals to observe positive behaviors in action."
+                };
+            } else {
+                return {
+                    level: "Needs Attention",
+                    feedback: "Your current responses indicate significant skill gaps in self-awareness, communication, career clarity, and judgment. This is not a limitation, but an opportunity to begin your journey of growth. You may lack exposure or structured support, which is crucial at this stage.",
+                    recommendations: "• Attend beginner-level soft skill workshops and confidence-building sessions.\n• Work one-on-one with a counselor or facilitator to address gaps.\n• Use real-life video case studies to learn decision-making and behavior patterns.\n• Create a personal development plan (PDP) with clear monthly goals."
+                };
+            }
+        }
+
+        // Function to generate PDF report with corrected alignment
+        function generatePDF(studentDetails, percentage, reportContent, categoryScores) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+            const margin = 15;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const contentWidth = pageWidth - (margin * 2);
+            let yPosition = 0;
+
+            doc.setFont('helvetica');
+
+            // --- HEADER ---
+            doc.setFillColor(79, 70, 229); // Indigo color
+            doc.rect(0, 0, pageWidth, 30, 'F');
+            doc.setFontSize(18);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont(undefined, "bold");
+            doc.text("Psychometric Assessment Report", pageWidth / 2, 14, { align: "center" });
+            doc.setFontSize(10);
+            doc.setFont(undefined, "normal");
+            doc.text("Excel Engineering College (Autonomous), Komarapalayam, Namakkal", pageWidth / 2, 22, { align: "center" });
+            yPosition = 45;
+
+            // --- STUDENT INFORMATION ---
+            doc.setFontSize(14);
+            doc.setTextColor(40, 40, 40);
+            doc.setFont(undefined, "bold");
+            doc.text("Student Information", margin, yPosition);
+            yPosition += 8;
+
+            doc.setFontSize(11);
+            doc.setFont(undefined, "normal");
+            doc.setTextColor(80, 80, 80);
+            doc.text(Name: ${studentDetails.name}, margin, yPosition);
+            doc.text(Roll Number: ${studentDetails.rollNumber}, margin, yPosition + 7);
+            doc.text(Email: ${studentDetails.email}, pageWidth / 2, yPosition);
+            doc.text(Department: ${studentDetails.department}, pageWidth / 2, yPosition + 7);
+            yPosition += 22;
+
+            // --- TEST RESULT ---
+            doc.setFillColor(243, 244, 246); // Light gray background
+            doc.roundedRect(margin - 5, yPosition - 8, contentWidth + 10, 34, 3, 3, 'F');
+            
+            doc.setFontSize(14);
+            doc.setTextColor(40, 40, 40);
+            doc.setFont(undefined, "bold");
+            doc.text("Overall Performance", margin, yPosition);
+            yPosition += 12;
+
+            // Score display
+            doc.setFontSize(28);
+            doc.setFont(undefined, "bold");
+            doc.setTextColor(79, 70, 229);
+            doc.text(${Math.round(percentage)}, margin, yPosition);
+            doc.setFontSize(14);
+            doc.setTextColor(120, 120, 120);
+            doc.text("/ 100", margin + 14, yPosition);
+
+            // Level display
+            doc.setFontSize(12);
+            doc.setTextColor(80, 80, 80);
+            doc.setFont(undefined, "normal");
+            doc.text("Performance Level:", pageWidth / 2, yPosition - 2);
+            doc.setFontSize(16);
+            doc.setFont(undefined, "bold");
+            doc.setTextColor(79, 70, 229);
+            doc.text(reportContent.level, pageWidth / 2, yPosition + 5);
+            yPosition += 25;
+
+
+            // --- CATEGORY SCORES ---
+            doc.setFontSize(14);
+            doc.setTextColor(40, 40, 40);
+            doc.setFont(undefined, "bold");
+            doc.text("Category Breakdown", margin, yPosition);
+            yPosition += 8;
+
+            for (const category in categoryScores) {
+                doc.setFontSize(11);
+                doc.setFont(undefined, "bold");
+                doc.text(category, margin, yPosition);
+                doc.setFontSize(10);
+                doc.setFont(undefined, "normal");
+                doc.text(Score: ${categoryScores[category].score}/${categoryScores[category].maxScore}, margin + 60, yPosition);
+                const remarksLines = doc.splitTextToSize(Remarks: ${categoryScores[category].remarks}, contentWidth);
+                doc.text(remarksLines, margin, yPosition + 5, { align: 'left' });
+                yPosition += (remarksLines.length * 4.5) + 8;
+            }
+
+            // --- FEEDBACK SECTION ---
+            doc.setFontSize(14);
+            doc.setTextColor(40, 40, 40);
+            doc.setFont(undefined, "bold");
+            doc.text("Detailed Feedback", margin, yPosition);
+            yPosition += 8;
+            
+            doc.setFontSize(10.5);
+            doc.setFont(undefined, "normal");
+            doc.setTextColor(80, 80, 80);
+            const feedbackLines = doc.splitTextToSize(reportContent.feedback, contentWidth);
+            doc.text(feedbackLines, margin, yPosition, { align: 'left' });
+            yPosition += (feedbackLines.length * 4.5) + 10;
+
+            // --- RECOMMENDATIONS SECTION ---
+            doc.setFontSize(14);
+            doc.setTextColor(40, 40, 40);
+            doc.setFont(undefined, "bold");
+            doc.text("Actionable Recommendations", margin, yPosition);
+            yPosition += 8;
+
+            doc.setFontSize(10.5);
+            doc.setFont(undefined, "normal");
+            doc.setTextColor(80, 80, 80);
+
+            const recommendationsArray = reportContent.recommendations.split('\n');
+            recommendationsArray.forEach(item => {
+                if (item.trim() === '') return;
+                const bulletText = item.substring(2); // Remove the '• '
+                const itemLines = doc.splitTextToSize(bulletText, contentWidth - 5); // Indented width
+                doc.text('•', margin, yPosition);
+                doc.text(itemLines, margin + 5, yPosition, { align: 'left' });
+                yPosition += (itemLines.length * 4.5) + 3; // Add spacing between bullet points
+            });
+            
+            // --- FOOTER ---
+            doc.setFillColor(79, 70, 229);
+            doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+            doc.setFontSize(9);
+            doc.setTextColor(255, 255, 255);
+            doc.text("This is an auto-generated report based on your test responses.", pageWidth / 2, pageHeight - 6, { align: "center" });
+
+            doc.save(Psychometric_Report_${studentDetails.name.replace(/ /g, "_")}.pdf);
+        }
+        
+        // --- MODAL & ALERT FUNCTIONS ---
+        function showLoadingModal() {
+            modalContent.innerHTML = `
+                <div class="flex flex-col items-center">
+                    <div class="loader mb-5"></div>
+                    <h2 class="text-2xl font-bold mb-2 text-gray-900">Generating Your Report...</h2>
+                    <p class="text-gray-600">Please wait a moment while we prepare your detailed feedback.</p>
+                </div>
+            `;
+            modal.classList.remove('hidden', 'modal-leave-active');
+            modal.classList.add('modal-enter-active');
+            setTimeout(() => modalContent.classList.add('scale-100'), 10);
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        function showResultModal(studentDetails, score, maxScore) {
+            const mailtoLink = `mailto:${studentDetails.email}?subject=${encodeURIComponent(Psychometric Test Report for ${studentDetails.name})}&body=${encodeURIComponent(Hi ${studentDetails.name},\n\nPlease find your personalized psychometric test report attached.\n\nBest regards.)}`;
+
+            modalContent.innerHTML = `
+                <div class="mx-auto w-16 h-16 mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold mb-2 text-gray-900">Report Generated!</h2>
+                <p class="text-gray-700 mb-4">Thank you, ${studentDetails.name}. You scored <strong>${score} / ${maxScore}</strong>.</p>
+                <p class="text-sm text-gray-600 mb-6">Your personalized report has been downloaded to your computer as a PDF.</p>
+                <div class="space-y-3">
+                    <a href="${mailtoLink}" class="w-full inline-block bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-all">
+                        📧 Email Report to Student
+                    </a>
+                    <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-800 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300 transition-all">Close</button>
+                </div>
+                <p class="text-xs text-gray-500 mt-4">Note: You'll need to manually attach the downloaded PDF to the email.</p>
+            `;
+        }
+        
+        function showCustomAlert(message) {
+            const alertBox = document.createElement('div');
+            alertBox.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background-color:#ef4444;color:white;padding:12px 20px;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);z-index:100;font-weight:500;';
+            alertBox.textContent = message;
+            document.body.appendChild(alertBox);
+            setTimeout(() => {
+                alertBox.style.transition = 'opacity 0.5s ease';
+                alertBox.style.opacity = '0';
+                setTimeout(() => alertBox.remove(), 500);
+            }, 3000);
+        }
+
+        function closeModal() {
+            modal.classList.add('modal-leave-active');
+            modal.classList.remove('modal-enter-active');
+            modalContent.classList.remove('scale-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                submitButton.disabled = false;
+                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            }, 300);
+        }
+
+        // --- EVENT LISTENERS ---
+        startTestButton.addEventListener('click', startTest);
+        submitButton.addEventListener('click', handleSubmission);
+        form.addEventListener('change', (e) => {
+            if (e.target.type === 'radio') {
+                updateProgress();
+            }
+        });
+
+        // --- INITIALIZATION ---
+        window.onload = renderQuestions;
+
+    </script>
+</body>
+</html>
