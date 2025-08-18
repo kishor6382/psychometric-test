@@ -109,7 +109,7 @@
             <p class="text-md sm:text-lg text-gray-500 mt-1">Navigate Your Interview with Confidence</p>
         </header>
 
-        <form id="psychometricForm" class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl space-y-10">
+        <main id="psychometricForm" class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl space-y-10">
             
             <!-- Student Details Section -->
             <div id="studentDetailsSection">
@@ -173,7 +173,7 @@
                     ✨ Submit & Get Your Report
                 </button>
             </div>
-        </form>
+        </main>
     </div>
 
     <!-- Modal for displaying results -->
@@ -186,56 +186,56 @@
     <script>
         // --- DATA & CONFIG ---
         const questions = [
-             { "q": "1. I enjoy meeting new people and easily initiate conversations.", "type": "scale", "category": "Personality" },
-             { "q": "2. I pay attention to details and prefer planning before acting.", "type": "scale", "category": "Personality" },
-             { "q": "3. I remain calm even in stressful situations.", "type": "scale", "category": "Emotional Intelligence" },
-             { "q": "4. I am curious and open to trying new ideas and methods.", "type": "scale", "category": "Personality" },
-             { "q": "5. I work well independently without constant supervision.", "type": "scale", "category": "Personality" },
-             { "q": "6. I am usually enthusiastic and energetic.", "type": "scale", "category": "Personality" },
-             { "q": "7. I follow through with tasks I start.", "type": "scale", "category": "Personality" },
-             { "q": "8. I get upset or nervous easily.", "type": "scale", "reverse": true, "category": "Emotional Intelligence" },
-             { "q": "9. I value creative approaches to problem-solving.", "type": "scale", "category": "Personality" },
-             { "q": "10. I adapt well to new environments and changes.", "type": "scale", "category": "Personality" },
-             { "q": "11. I understand how my emotions influence my decisions.", "type": "scale", "category": "Emotional Intelligence" },
-             { "q": "12. I can control my emotions even when I feel stressed.", "type": "scale", "category": "Emotional Intelligence" },
-             { "q": "13. I empathize easily with other people's feelings.", "type": "scale", "category": "Emotional Intelligence" },
-             { "q": "14. I maintain calm during difficult conversations.", "type": "scale", "category": "Communication" },
-             { "q": "15. I can read non-verbal cues like tone and body language.", "type": "scale", "category": "Communication" },
-             { "q": "16. I try to resolve conflicts instead of avoiding them.", "type": "scale", "category": "Situational Judgment" },
-             { "q": "17. I accept constructive criticism without taking it personally.", "type": "scale", "category": "Personality" },
-             { "q": "18. I encourage others when they feel low or demotivated.", "type": "scale", "category": "Emotional Intelligence" },
-             { "q": "19. I am aware of my strengths and weaknesses.", "type": "scale", "category": "Emotional Intelligence" },
-             { "q": "20. I listen actively during conversations.", "type": "scale", "category": "Communication" },
-             { "q": "21. I can express my ideas clearly in both written and spoken formats.", "type": "scale", "category": "Communication" },
-             { "q": "22. I listen carefully and do not interrupt while others are talking.", "type": "scale", "category": "Communication" },
-             { "q": "23. I adjust my communication style based on the audience.", "type": "scale", "category": "Communication" },
-             { "q": "24. I feel confident while speaking in group discussions or interviews.", "type": "scale", "category": "Communication" },
-             { "q": "25. I maintain eye contact and appropriate body language when speaking.", "type": "scale", "category": "Communication" },
-             { "q": "26. I can handle questions or objections calmly.", "type": "scale", "category": "Emotional Intelligence" },
-             { "q": "27. I am able to structure my answers logically during interviews.", "type": "scale", "category": "Communication" },
-             { "q": "28. I ask relevant questions when I don't understand something.", "type": "scale", "category": "Communication" },
-             { "q": "29. I respond to feedback professionally and politely.", "type": "scale", "category": "Communication" },
-             { "q": "30. I can summarize my views effectively without rambling.", "type": "scale", "category": "Communication" },
-             { "q": "31. I enjoy working with machines, tools, or animals.", "type": "scale", "category": "Career Interests" },
-             { "q": "32. I like solving puzzles or analysing scientific data.", "type": "scale", "category": "Career Interests" },
-             { "q": "33. I enjoy music, writing, art, or drama.", "type": "scale", "category": "Career Interests" },
-             { "q": "34. I like helping people solve their problems.", "type": "scale", "category": "Career Interests" },
-             { "q": "35. I enjoy leading teams or selling ideas.", "type": "scale", "category": "Career Interests" },
-             { "q": "36. I prefer working with numbers, data, and organized tasks.", "type": "scale", "category": "Career Interests" },
-             { "q": "37. I feel most satisfied when I work on hands-on tasks.", "type": "scale", "category": "Career Interests" },
-             { "q": "38. I would enjoy doing research or investigative writing.", "type": "scale", "category": "Career Interests" },
-             { "q": "39. I feel motivated when I can teach or counsel others.", "type": "scale", "category": "Career Interests" },
-             { "q": "40. I prefer roles where I can organize files, reports, or systems.", "type": "scale", "category": "Career Interests" },
-             { "q": "41. You are asked a question in an interview but don't know the answer. What do you do?", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Make up an answer that sounds good.", "score": 1 }, { "text": "B. Admit you don't know and stay silent.", "score": 2 }, { "text": "C. Politely acknowledge it and mention how you would find the answer.", "score": 5 }, { "text": "D. Try to divert the question.", "score": 1 }] },
-             { "q": "42. During a group interview, a teammate is dominating. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Argue and challenge him.", "score": 1 }, { "text": "B. Let them continue to avoid conflict.", "score": 2 }, { "text": "C. Wait and then calmly ask to share your view.", "score": 5 }, { "text": "D. Ignore the discussion.", "score": 1 }] },
-             { "q": "43. The interviewer gives feedback that your response lacked clarity. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Get defensive and justify yourself.", "score": 1 }, { "text": "B. Say \"okay\" but don't respond.", "score": 2 }, { "text": "C. Ask politely for clarification and offer a better answer.", "score": 5 }, { "text": "D. Change the topic.", "score": 1 }] },
-             { "q": "44. You forgot an important document before your interview. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Panic and cancel the interview.", "score": 1 }, { "text": "B. Attend and apologize, explaining honestly.", "score": 5 }, { "text": "C. Blame someone else.", "score": 1 }, { "text": "D. Skip the question if asked.", "score": 1 }] },
-             { "q": "45. You're asked about a weakness. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Say \"I have none.\"", "score": 1 }, { "text": "B. Mention a weakness and how you're improving.", "score": 5 }, { "text": "C. Give a fake strength as a weakness.", "score": 2 }, { "text": "D. Avoid answering.", "score": 1 }] },
-             { "q": "46. You are working on a group project. One team member is not contributing...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Do their part of the work silently to avoid conflict", "score": 2 }, { "text": "B. Confront them publicly in front of the team", "score": 1 }, { "text": "C. Speak to them privately and try to understand their side", "score": 5 }, { "text": "D. Complain to the teacher without discussing with the team member", "score": 3 }] },
-             { "q": "47. You notice your friend cheating during an important online test...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Ignore it - they're your friend and need help", "score": 1 }, { "text": "B. Tell the teacher immediately", "score": 3 }, { "text": "C. Confront your friend privately and advise them not to do it again", "score": 5 }, { "text": "D. Warn them during the test to stop", "score": 2 }] },
-             { "q": "48. During a mock interview, you're asked a technical question you don't know the answer to...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Try to bluff and answer vaguely", "score": 1 }, { "text": "B. Admit you don't know and remain silent", "score": 2 }, { "text": "C. Say, \"I'm not sure, but I'd approach it by...\" and describe your thinking process", "score": 5 }, { "text": "D. Skip the question entirely and hope it's not noticed", "score": 1 }] },
-             { "q": "49. You send a message to a classmate that they misinterpret...", "type": "mcq", "category": "Communication", "options": [{ "text": "A. Ignore it they'll get over it", "score": 1 }, { "text": "B. Clarify what you meant and apologize if it caused confusion", "score": 5 }, { "text": "C. Ask others to explain it to them", "score": 2 }, { "text": "D. Block them to avoid confrontation", "score": 1 }] },
-             { "q": "50. You are selected as the team leader for an event. Just a day before the event, your two key volunteers drop out...", "type": "mcq", "category": "Personality", "options": [{ "text": "A. Panic and cancel the event", "score": 1 }, { "text": "B. Blame them publicly and ask others to replace them", "score": 2 }, { "text": "C. Calmly reassess roles, delegate efficiently, and motivate your team", "score": 5 }, { "text": "D. Try to do everything yourself", "score": 3 }] }
+              { "q": "I enjoy meeting new people and easily initiate conversations.", "type": "scale", "category": "Personality" },
+              { "q": "I pay attention to details and prefer planning before acting.", "type": "scale", "category": "Personality" },
+              { "q": "I remain calm even in stressful situations.", "type": "scale", "category": "Emotional Intelligence" },
+              { "q": "I am curious and open to trying new ideas and methods.", "type": "scale", "category": "Personality" },
+              { "q": "I work well independently without constant supervision.", "type": "scale", "category": "Personality" },
+              { "q": "I am usually enthusiastic and energetic.", "type": "scale", "category": "Personality" },
+              { "q": "I follow through with tasks I start.", "type": "scale", "category": "Personality" },
+              { "q": "I get upset or nervous easily.", "type": "scale", "reverse": true, "category": "Emotional Intelligence" },
+              { "q": "I value creative approaches to problem-solving.", "type": "scale", "category": "Personality" },
+              { "q": "I adapt well to new environments and changes.", "type": "scale", "category": "Personality" },
+              { "q": "I understand how my emotions influence my decisions.", "type": "scale", "category": "Emotional Intelligence" },
+              { "q": "I can control my emotions even when I feel stressed.", "type": "scale", "category": "Emotional Intelligence" },
+              { "q": "I empathize easily with other people's feelings.", "type": "scale", "category": "Emotional Intelligence" },
+              { "q": "I maintain calm during difficult conversations.", "type": "scale", "category": "Communication" },
+              { "q": "I can read non-verbal cues like tone and body language.", "type": "scale", "category": "Communication" },
+              { "q": "I try to resolve conflicts instead of avoiding them.", "type": "scale", "category": "Situational Judgment" },
+              { "q": "I accept constructive criticism without taking it personally.", "type": "scale", "category": "Personality" },
+              { "q": "I encourage others when they feel low or demotivated.", "type": "scale", "category": "Emotional Intelligence" },
+              { "q": "I am aware of my strengths and weaknesses.", "type": "scale", "category": "Emotional Intelligence" },
+              { "q": "I listen actively during conversations.", "type": "scale", "category": "Communication" },
+              { "q": "I can express my ideas clearly in both written and spoken formats.", "type": "scale", "category": "Communication" },
+              { "q": "I listen carefully and do not interrupt while others are talking.", "type": "scale", "category": "Communication" },
+              { "q": "I adjust my communication style based on the audience.", "type": "scale", "category": "Communication" },
+              { "q": "I feel confident while speaking in group discussions or interviews.", "type": "scale", "category": "Communication" },
+              { "q": "I maintain eye contact and appropriate body language when speaking.", "type": "scale", "category": "Communication" },
+              { "q": "I can handle questions or objections calmly.", "type": "scale", "category": "Emotional Intelligence" },
+              { "q": "I am able to structure my answers logically during interviews.", "type": "scale", "category": "Communication" },
+              { "q": "I ask relevant questions when I don't understand something.", "type": "scale", "category": "Communication" },
+              { "q": "I respond to feedback professionally and politely.", "type": "scale", "category": "Communication" },
+              { "q": "I can summarize my views effectively without rambling.", "type": "scale", "category": "Communication" },
+              { "q": "I enjoy working with machines, tools, or animals.", "type": "scale", "category": "Career Interests" },
+              { "q": "I like solving puzzles or analysing scientific data.", "type": "scale", "category": "Career Interests" },
+              { "q": "I enjoy music, writing, art, or drama.", "type": "scale", "category": "Career Interests" },
+              { "q": "I like helping people solve their problems.", "type": "scale", "category": "Career Interests" },
+              { "q": "I enjoy leading teams or selling ideas.", "type": "scale", "category": "Career Interests" },
+              { "q": "I prefer working with numbers, data, and organized tasks.", "type": "scale", "category": "Career Interests" },
+              { "q": "I feel most satisfied when I work on hands-on tasks.", "type": "scale", "category": "Career Interests" },
+              { "q": "I would enjoy doing research or investigative writing.", "type": "scale", "category": "Career Interests" },
+              { "q": "I feel motivated when I can teach or counsel others.", "type": "scale", "category": "Career Interests" },
+              { "q": "I prefer roles where I can organize files, reports, or systems.", "type": "scale", "category": "Career Interests" },
+              { "q": "You are asked a question in an interview but don't know the answer. What do you do?", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Make up an answer that sounds good.", "score": 1 }, { "text": "B. Admit you don't know and stay silent.", "score": 2 }, { "text": "C. Politely acknowledge it and mention how you would find the answer.", "score": 5 }, { "text": "D. Try to divert the question.", "score": 1 }] },
+              { "q": "During a group interview, a teammate is dominating. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Argue and challenge him.", "score": 1 }, { "text": "B. Let them continue to avoid conflict.", "score": 2 }, { "text": "C. Wait and then calmly ask to share your view.", "score": 5 }, { "text": "D. Ignore the discussion.", "score": 1 }] },
+              { "q": "The interviewer gives feedback that your response lacked clarity. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Get defensive and justify yourself.", "score": 1 }, { "text": "B. Say \"okay\" but don't respond.", "score": 2 }, { "text": "C. Ask politely for clarification and offer a better answer.", "score": 5 }, { "text": "D. Change the topic.", "score": 1 }] },
+              { "q": "You forgot an important document before your interview. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Panic and cancel the interview.", "score": 1 }, { "text": "B. Attend and apologize, explaining honestly.", "score": 5 }, { "text": "C. Blame someone else.", "score": 1 }, { "text": "D. Skip the question if asked.", "score": 1 }] },
+              { "q": "You're asked about a weakness. You:", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Say \"I have none.\"", "score": 1 }, { "text": "B. Mention a weakness and how you're improving.", "score": 5 }, { "text": "C. Give a fake strength as a weakness.", "score": 2 }, { "text": "D. Avoid answering.", "score": 1 }] },
+              { "q": "You are working on a group project. One team member is not contributing...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Do their part of the work silently to avoid conflict", "score": 2 }, { "text": "B. Confront them publicly in front of the team", "score": 1 }, { "text": "C. Speak to them privately and try to understand their side", "score": 5 }, { "text": "D. Complain to the teacher without discussing with the team member", "score": 3 }] },
+              { "q": "You notice your friend cheating during an important online test...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Ignore it - they're your friend and need help", "score": 1 }, { "text": "B. Tell the teacher immediately", "score": 3 }, { "text": "C. Confront your friend privately and advise them not to do it again", "score": 5 }, { "text": "D. Warn them during the test to stop", "score": 2 }] },
+              { "q": "During a mock interview, you're asked a technical question you don't know the answer to...", "type": "mcq", "category": "Situational Judgment", "options": [{ "text": "A. Try to bluff and answer vaguely", "score": 1 }, { "text": "B. Admit you don't know and remain silent", "score": 2 }, { "text": "C. Say, \"I'm not sure, but I'd approach it by...\" and describe your thinking process", "score": 5 }, { "text": "D. Skip the question entirely and hope it's not noticed", "score": 1 }] },
+              { "q": "You send a message to a classmate that they misinterpret...", "type": "mcq", "category": "Communication", "options": [{ "text": "A. Ignore it they'll get over it", "score": 1 }, { "text": "B. Clarify what you meant and apologize if it caused confusion", "score": 5 }, { "text": "C. Ask others to explain it to them", "score": 2 }, { "text": "D. Block them to avoid confrontation", "score": 1 }] },
+              { "q": "You are selected as the team leader for an event. Just a day before the event, your two key volunteers drop out...", "type": "mcq", "category": "Personality", "options": [{ "text": "A. Panic and cancel the event", "score": 1 }, { "text": "B. Blame them publicly and ask others to replace them", "score": 2 }, { "text": "C. Calmly reassess roles, delegate efficiently, and motivate your team", "score": 5 }, { "text": "D. Try to do everything yourself", "score": 3 }] }
         ];
 
         // --- DOM ELEMENTS ---
@@ -251,6 +251,19 @@
         const progressText = document.getElementById('progressText');
 
         // --- FUNCTIONS ---
+
+        /**
+         * Shuffles an array in place using the Fisher-Yates (aka Knuth) Shuffle algorithm.
+         * @param {Array} array The array to shuffle.
+         * @returns {Array} The shuffled array.
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // ES6 swap
+            }
+            return array;
+        }
 
         // Function to start the test
         function startTest() {
@@ -271,21 +284,33 @@
         
         // Function to create and append questions to the form
         function renderQuestions() {
+            // Clear any existing questions before rendering
+            questionsContainer.innerHTML = ''; 
+
+            // Shuffle the entire questions array before rendering
+            shuffleArray(questions);
+
             questions.forEach((item, index) => {
                 const questionIndex = index + 1;
                 const questionCard = document.createElement('div');
                 questionCard.className = 'p-6 bg-white rounded-xl border border-gray-200 question-card';
 
-                let questionHTML = `<p class="text-md font-semibold text-gray-800 mb-5">${item.q}</p><div class="flex flex-wrap gap-3">`;
+                // Use the index for numbering in the UI, but the original question text remains the same
+                let questionHTML = `<p class="text-md font-semibold text-gray-800 mb-5">${questionIndex}. ${item.q}</p>`;
 
                 if (item.type === 'scale') {
-                    const options = [
+                    questionHTML += `<div class="flex flex-wrap gap-3">`;
+                    let options = [
                         { label: 'Strongly Agree', value: item.reverse ? 1 : 5 },
                         { label: 'Agree', value: item.reverse ? 2 : 4 },
                         { label: 'Neutral', value: 3 },
                         { label: 'Disagree', value: item.reverse ? 4 : 2 },
                         { label: 'Strongly Disagree', value: item.reverse ? 5 : 1 }
                     ];
+                    
+                    // Shuffle the scale options array
+                    shuffleArray(options); 
+
                     options.forEach(opt => {
                         questionHTML += `
                             <label class="custom-radio-label cursor-pointer">
@@ -293,18 +318,23 @@
                                 <span class="block text-center px-4 py-2 rounded-lg border border-gray-300 font-medium">${opt.label}</span>
                             </label>`;
                     });
+                    questionHTML += `</div>`;
                 } else if (item.type === 'mcq') {
-                    questionHTML = `<p class="text-md font-semibold text-gray-800 mb-5">${item.q}</p><div class="space-y-3">`; // Override for vertical layout
-                    item.options.forEach(opt => {
+                    questionHTML += `<div class="space-y-3">`;
+                    
+                    // Shuffle a copy of the MCQ options to avoid modifying the original array
+                    const shuffledOptions = shuffleArray([...item.options]); 
+
+                    shuffledOptions.forEach(opt => {
                         questionHTML += `
                             <label class="custom-radio-label cursor-pointer flex">
                                 <input type="radio" name="q${questionIndex}" value="${opt.score}" data-label="${opt.text}" required>
                                 <span class="block w-full text-left px-4 py-3 rounded-lg border border-gray-300 font-medium">${opt.text}</span>
                             </label>`;
                     });
+                    questionHTML += `</div>`;
                 }
 
-                questionHTML += `</div>`;
                 questionCard.innerHTML = questionHTML;
                 questionsContainer.appendChild(questionCard);
             });
@@ -371,14 +401,16 @@
         function calculateCategoryScores(scores) {
             let categoryResults = {};
             for (const category in scores) {
-                const maxCategoryScore = scores[category].count * 5;
-                const categoryPercentage = (scores[category].total / maxCategoryScore) * 100;
-                categoryResults[category] = {
-                    score: scores[category].total,
-                    maxScore: maxCategoryScore,
-                    percentage: categoryPercentage,
-                    remarks: getCategoryRemarks(category, scores[category].total)
-                };
+                if (scores[category].count > 0) {
+                    const maxCategoryScore = scores[category].count * 5;
+                    const categoryPercentage = (scores[category].total / maxCategoryScore) * 100;
+                    categoryResults[category] = {
+                        score: scores[category].total,
+                        maxScore: maxCategoryScore,
+                        percentage: categoryPercentage,
+                        remarks: getCategoryRemarks(category, scores[category].total)
+                    };
+                }
             }
             return categoryResults;
         }
@@ -423,7 +455,8 @@
                     return remarksMap[category][threshold];
                 }
             }
-            return "";
+            // Return the highest remark if score exceeds all thresholds
+            return remarksMap[category][thresholds[thresholds.length - 1]];
         }
 
         // Function to get report content based on score percentage
@@ -461,7 +494,7 @@
             }
         }
 
-        // Function to generate PDF report with corrected alignment
+        // Function to generate PDF report
         function generatePDF(studentDetails, percentage, reportContent, categoryScores) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -515,10 +548,7 @@
             doc.setFontSize(28);
             doc.setFont(undefined, "bold");
             doc.setTextColor(79, 70, 229);
-            doc.text(`${Math.round(percentage)}`, margin, yPosition);
-            doc.setFontSize(14);
-            doc.setTextColor(120, 120, 120);
-            doc.text("/ 100", margin + 14, yPosition);
+            doc.text(`${Math.round(percentage)}%`, margin, yPosition); // CHANGED: Now displays as percentage
 
             // Level display
             doc.setFontSize(12);
@@ -670,4 +700,3 @@
     </script>
 </body>
 </html>
-
